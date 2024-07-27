@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weed Detection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            background: url('https://wallpapers.com/images/featured/sustainable-agriculture-t1tte6fs05hrpkyc.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(22, 22, 22, 0.572); /* Adjust transparency here */
+            z-index: -1;
+        }
+        .container {
+            z-index: 1;
+            display: flex;
+            width: 80%;
+            max-width: 800px;
+            margin: 20px;
+            margin-top: 50px;
+            /* background: rgba(255, 255, 255, 0.9); */
+            border-radius: 10px;
+            /* overflow: hidden; */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border: 1px solid white;
+        }
+        .left-panel {
+            flex: 1;
+            padding: 40px;
+            background: transparent;
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .left-panel h1 {
+            font-size: 30px;
+            color: #ededed;
+        }
+        .right-panel {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+            justify-content: center;
+            align-items: center;
+        }
+        .right-panel h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        label {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        label:hover {
+            background-color: #0056b3;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0d454363;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #333;
+        }
+        header {
+    position: fixed; /* Fixed position to keep it at the top */
+    width: 100%; 
+    top: 0; 
+    left: 0; 
+    background-color: rgba(38, 38, 38, 0.845); /* Adjust background as needed */
+    z-index: 1000; /* Ensure it stays above other content */
+    padding: 10px 0; /* Add some padding for aesthetics */
+}
+
+nav {
+            
+            display: flex; 
+            justify-content: space-between; /* Space out the elements */
+            align-items: center; /* Center the logo vertically within the header */
+            padding: 0 20px; /* Add some padding to the sides */
+        }
+        .nav-items {
+            display: flex;
+            align-items: center;
+        }
+        .nav-item {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            margin: 0 20px;
+            transition: color 0.3s;
+        }
+        .nav-item:hover {
+            color: #ddd;
+        }
+
+.logo {
+    width: 100px; /* Adjust as needed */
+    display: flex;justify-content: left;
+}
+
+.logo img {
+    width: 150%; /* Ensure the image takes up the full width of the logo div */
+    height: auto; /* Maintain aspect ratio */
+}
+    .info{
+        padding: 10px;
+        text-align: left;
+        width: 50%;
+    }
+    .info h1{
+        color: white;
+        font-size: 25px;
+    }
+    .about{
+        width: 90%;
+        display: flex;
+        align-items: center;
+        margin-top: 25rem;
+        background-color: #ddd;
+        border-radius: 0 50px;
+        padding: 20px;
+    }
+    /* .about .detail{
+        width: 50%;
+    } */
+    .about p{
+        padding: 10px;
+    }
+    .about ol{
+        padding: 10px;
+    }
+    .about .weed-img img{
+        border-radius: 0 20px;
+    }
+    footer{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        width: 100%;
+        background-color: #1f2328;
+    }
+    footer .team img{
+        width: 100px;
+        padding: 20px;
+    }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="{{ url_for('static', filename='WeedLogoAsset 1@2x Anshu.png') }}" alt="Logo">
+            </div>
+            <div class="nav-items">
+                <a href="#" class="nav-item" onclick="showSection('home')">Home</a>
+                <a href="#" class="nav-item" onclick="showSection('predictions')">Predictions</a>
+                <a href="#" class="nav-item" onclick="showSection('model-details')">Model Details</a>
+            </div>
+        </nav>
+    </header>
+    <div class="about">
+        <div class="detail">
+            <h1>What is Weed?</h1>
+        
+        <p>A weed is a plant that's growing where it's not wanted. It can be any kind of plant, but it's usually one that competes with other plants that we do want, like crops or flowers in a garden.</p>
+        <p>
+            There are many types of weeds, but they can be generally classified into three main categories based on their leaf structure:
+            
+        </p>
+        <ol><b>Grasses:</b>These weeds have long, narrow leaves with parallel veins. They reproduce quickly by seed and can spread easily. Some common examples of grassy weeds include crabgrass, dandelions, and nutsedge.</ol>
+        <ol><b>Broadleaf weeds:</b> These weeds have wide leaves with netted veins. They can be annuals, biennials, or perennials. Some common examples of broadleaf weeds include clover, chickweed, and purslane.</ol>
+        <ol><b>Sedges:</b>These weeds have three-ranked leaves that resemble blades of grass, but they have solid stems and triangular leaf edges. They reproduce by seed and by spreading underground stems called rhizomes. Some common examples of sedges include nutsedge and kyllinga.</ol>
+        </div>
+        <div class="weed-img">
+            <img src="{{ url_for('static', filename='weed.jpeg') }}" alt="weed">
+            <img src="{{ url_for('static', filename='weed2.jpeg') }}" alt="weed">
+        </div>
+    </div>
+    <div class="container">
+        <div class="left-panel">
+            <h1>Weed Detection using DeepLearning</h1>
+        </div>
+        <div class="right-panel">
+
+            <h1>Upload an image to detect weeds</h1>
+            <input type="file" id="imageUpload" accept="image/*" onchange="displayFileName()">
+            <label for="imageUpload" id="fileLabel">Choose File</label>
+            <span id="fileName" style="margin-left: 10px;"></span>
+            <button onclick="predictImage()">Predict</button>
+            <p id="result"></p>
+        </div>
+        
+    </div>
+    <footer>
+        <div class="team">
+            <img src="{{ url_for('static', filename='MAK1Asset 1@2x onlylogo.png') }}" alt="Avinya">
+        </div>
+        <p>Copyright &copy; 2024</p>
+    </footer>
+
+    <script>
+        function uploadImage() {
+            const input = document.getElementById('imageUpload');
+            const file = input.files[0];
+            const formData = new FormData();
+            formData.append('file', file);
+
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = `Prediction: ${data.label} (Confidence: ${(data.confidence * 100).toFixed(2)}%)`;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        function predictImage() {
+            // Optional: Add more logic for prediction handling or UI feedback
+            uploadImage(); // Call existing uploadImage function to make prediction
+        }
+        function displayFileName() {
+            const input = document.getElementById('imageUpload');
+            const label = document.getElementById('fileLabel');
+            const fileName = input.files[0].name;
+            label.innerText = fileName;
+        }
+    </script>
+</body>
+</html>
